@@ -1,25 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+import Prismic from '@prismicio/client';
+import React, { useEffect, useState } from 'react';
+import ImageGrid from './components/ImageGrid';
 
-function App() {
+export default function App(props) {
+  const [pages, setPages] = useState([]);
+
+  useEffect(() => {
+    getApiData();
+  });
+
+  function getApiData() {
+    const apiEndpoint = "https://chripfals.cdn.prismic.io/api/v2";
+
+    Prismic.api(apiEndpoint).then((api) => {
+      return api.query("");
+    }).then((response) => {
+      setPages(response.results);
+    });
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Te amo Japa
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <ImageGrid
+      imageList={pages}
+    ></ImageGrid>
+  )
 }
-
-export default App;
